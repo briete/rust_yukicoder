@@ -1,19 +1,37 @@
-fn main() {
-    let mut count: u32 = 0;
-    let mut max_day: u32 = 0;
-    for month in 1..12 {
-        match month {
-            1|3|5|7|8|10|12 => max_day = 31,
-            2 => max_day = 28,
-            4|6|9|11 => max_day = 30,
-            _ => (),
-        };
-        for day in 1..max_day {
-            let day: Vec<char> = format!("{:02}", day).to_string().chars().collect::<Vec<char>>();
-            if month == day[0].to_string().parse::<i32>().unwrap() + day[1].to_string().parse::<i32>().unwrap() {
-                count+=1;
-            }
-        }
+use std::io::{self, Read};
+
+#[derive(Debug)]
+struct Input {
+    s: i32,
+    f: i32,
+}
+
+fn next_token(cin_lock: &mut io::StdinLock) -> String {
+    cin_lock
+        .by_ref()
+        .bytes()
+        .map(|c| c.unwrap() as char)
+        .skip_while(|c| c.is_whitespace())
+        .take_while(|c| !c.is_whitespace())
+        .collect::<String>()
+}
+
+fn read_input(cin_lock: &mut io::StdinLock) -> Input {
+    Input {
+        s: next_token(cin_lock).parse().unwrap(),
+        f: next_token(cin_lock).parse().unwrap(),
     }
-    println!("{}", count);
+}
+
+fn solve(input: Input, _cin_lock: &mut io::StdinLock) {
+    let answer = (input.s / input.f) + 1;
+    println!("{}", answer);
+}
+
+fn main() {
+    let cin = io::stdin();
+    let mut cin_lock = cin.lock();
+
+    let input = read_input(&mut cin_lock);
+    solve(input, &mut cin_lock);
 }
